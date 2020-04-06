@@ -1,0 +1,27 @@
+.flex{
+    display: flex;
+}
+
+.j-center{
+    justify-content: center;
+}
+
+.a-center{
+    align-items:center;
+}
+
+.j-bt{
+    justify-content: space-between;
+}
+
+.flex-1{
+    flex: 1;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.no-select{
+    user-select: none;
+}
