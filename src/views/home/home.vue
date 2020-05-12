@@ -34,7 +34,7 @@
                             theme="dark" width="auto"
                             :open-names="opennames"
                             :class="menuitemClasses">
-                        <MenuItem name="0-1" to="/">
+                        <MenuItem name="0-1" to="/home">
                             <Icon type="ios-browsers-outline"></Icon>
                             <span>工作平台</span>
                         </MenuItem>
@@ -44,9 +44,9 @@
                                 <span>用户管理</span>
                             </template>
 
-                        <MenuItem name="1-1" to="/info">用户列表</MenuItem>
-                        <MenuItem name="1-2">option 2</MenuItem>
-                        <MenuItem name="1-3">option 3</MenuItem>
+                        <MenuItem name="1-1" to="/info">数据列表</MenuItem>
+                        <MenuItem name="1-2" to="/form">展示视图</MenuItem>
+                        <MenuItem name="1-3" to="/alert">告警查看</MenuItem>
                         </Submenu>
                         <Submenu name="'2">
                             <template slot="title">
@@ -54,9 +54,8 @@
                                 <span>系统管理</span>
                             </template>
 
-                            <MenuItem name="2-1">Option 1</MenuItem>
-                            <MenuItem name="2-2">Option 2</MenuItem>
-                            <MenuItem name="2-3">Option 3</MenuItem>
+                            <MenuItem name="2-1" to="/export-excel">导出表格</MenuItem>
+                            <MenuItem name="2-2" to="/upload-excel">导入表格</MenuItem>
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">

@@ -41,22 +41,22 @@
             this.chartPie = echarts.init(document.getElementById('chartPie'));
 
             this.chartColumn.setOption({
-                title: { text: 'Column Chart' },
+                title: { text: '告警次数' },
                 tooltip: {},
                 xAxis: {
-                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                    data: ["CPU告警","MySQL","磁盘告警","主机告警","内存告警"]
                 },
                 yAxis: {},
                 series: [{
                     name: '销量',
                     type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
+                    data: [15, 31, 23, 11, 38]
                 }]
             });
 
             this.chartBar.setOption({
                 title: {
-                    text: 'Bar Chart',
+                    text: '告警日志',
                   //  subtext: '数据来自网络'
                 },
                 tooltip: {
@@ -66,7 +66,7 @@
                     }
                 },
                 legend: {
-                    data: ['2011年', '2012年']
+                    data: ['上周', '本周']
                 },
                 grid: {
                     left: '3%',
@@ -80,30 +80,30 @@
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
+                    data: ['CPU告警','内存告警','主机告警','磁盘告警','MySQL告警','总告警数']
                 },
                 series: [
                     {
-                        name: '2011年',
+                        name: '上周',
                         type: 'bar',
-                        data: [18203, 23489, 29034, 104970, 131744, 630230]
+                        data: [31, 40, 19, 15, 36, 141]
                     },
                     {
-                        name: '2012年',
+                        name: '本周',
                         type: 'bar',
-                        data: [19325, 23438, 31000, 121594, 134141, 681807]
+                        data: [27, 45, 16, 11, 33, 133]
                     }
                 ]
             });
             this.chartLine.setOption({
                 title: {
-                    text: 'Line Chart'
+                    text: '告警日志'
                 },
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['邮件营销','联盟广告','搜索引擎']
+                    data:['CPU告警','MySQL告警','内存告警']
                 },
                 grid: {
                     left: '3%',
@@ -121,29 +121,29 @@
                 },
                 series: [
                     {
-                        name:'邮件营销',
+                        name:'CPU告警',
                         type:'line',
                         stack: '总量',
-                        data:[120, 132, 101, 134, 90, 230, 210]
+                        data:[4, 6, 7, 4, 5, 7, 4]
                     },
                     {
-                        name:'联盟广告',
+                        name:'MySQL告警',
                         type:'line',
                         stack: '总量',
-                        data:[220, 182, 191, 234, 290, 330, 310]
+                        data:[2, 2, 5, 2, 3, 1, 3]
                     },
                     {
-                        name:'搜索引擎',
+                        name:'内存告警',
                         type:'line',
                         stack: '总量',
-                        data:[820, 932, 901, 934, 1290, 1330, 1320]
+                        data:[6,9, 11, 8, 10, 10, 13]
                     }
                 ]
             });
             this.chartPie.setOption({
                 title : {
-                    text: 'Pie Chart',
-                    subtext: '纯属虚构',
+                    text: '告警类型',
+                    subtext: '',
                     x:'center'
                 },
                 tooltip : {
@@ -153,7 +153,7 @@
                 legend: {
                     orient: 'vertical',
                     left: 'left',
-                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                    data: ['CPU告警','内存告警','磁盘告警','主机告警','MySQL服务器告警']
                 },
                 series : [
                     {
@@ -162,11 +162,11 @@
                         radius : '55%',
                         center: ['50%', '60%'],
                         data:[
-                            {value:335, name:'直接访问'},
-                            {value:310, name:'邮件营销'},
-                            {value:234, name:'联盟广告'},
-                            {value:135, name:'视频广告'},
-                            {value:1548, name:'搜索引擎'}
+                            {value:15, name:'CPU告警'},
+                            {value:31, name:'MySQL服务器告警'},
+                            {value:23, name:'磁盘告警'},
+                            {value:11, name:'主机告警'},
+                            {value:38, name:'内存告警'}
                         ],
                         itemStyle: {
                             emphasis: {

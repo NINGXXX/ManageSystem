@@ -7,8 +7,6 @@ import 'view-design/dist/styles/iview.css';
 import './assets/css/icons/iconfont.css'
 import './assets/css/common.css'
 
-// import Mock from './mock'
-// Mock.bootstrap();
 
 Vue.config.productionTip = false
 

@@ -1,10 +1,10 @@
 <template>
     <div class="content">
-        <label prop="name">&nbsp;姓名：&nbsp;</label>
+        <label prop="name">&nbsp;类型：&nbsp;</label>
         <Input v-model="companyName" id="pp" style="width: 120px" placeholder="请输入" />&nbsp;&nbsp;
         <Button @click="search" type="primary" icon="ios-search">查询</Button>&nbsp;&nbsp;
         <Button type="primary" @click="addInfo" icon="ios-add-circle-outline">新增</Button>
-        <Table :columns="tableColumns" :data="tableData" size="small" ref="table">
+        <Table :columns="tableColumns" :data="tableData" @on-selection-change="selectRows" size="small" ref="table">
             <template slot-scope="{ row }" slot="name">
                 <strong>{{ row.name }}</strong>
             </template>
@@ -34,17 +34,17 @@
                 width="820"
                 @on-visible-change="handleReset('formValidate')">
             <Form inline ref="formValidate" :model="formValidate" :label-width="80" :rules="ruleValidate">
-                <FormItem label="姓名" prop="name">
-                    <Input v-model="formValidate.name" placeholder="请输入姓名"></Input>
+                <FormItem label="类型" prop="name">
+                    <Input v-model="formValidate.name" placeholder="请输入类型"></Input>
                 </FormItem>
-                <FormItem label="年龄" prop="age">
-                    <Input v-model="formValidate.age" placeholder="请输入年龄"></Input>
+                <FormItem label="次数" prop="age">
+                    <Input v-model="formValidate.age" placeholder="请输入时间"></Input>
                 </FormItem>
-                <FormItem label="爱好" prop="address">
+                <FormItem label="描述" prop="address">
                     <Input v-model="formValidate.address" placeholder="请输入你的爱好"></Input>
                 </FormItem>
-                <FormItem label="性别" prop="sex">
-                    <Input v-model="formValidate.sex" placeholder="男/女"></Input>
+                <FormItem label="已处理" prop="sex">
+                    <Input v-model="formValidate.sex" placeholder="是/否"></Input>
                 </FormItem>
                 <FormItem>
                     <!-- 提交的单击事件  在下面的方法里面写好 -->
@@ -53,9 +53,13 @@
                 </FormItem>
             </Form>
         </Modal>
+
         <!-- 分页控件 -->
         <div style="margin: 10px;overflow: hidden">
             <div style="float:left">
+<!--                <button type="danger" @click="batchRemove" :disabled="this.rows.length===0">批量删除</button>-->
+            </div>
+            <div style="float:right">
                 <Page
                         :total="dataCount"
                         :page-size="pageSize"
@@ -70,56 +74,60 @@
 </template>
 
 <script>
+
+    //import {getInfo} from "../../network/info.js"
+
     let testData = {
         histories: [
             {
-                name: "老王",
-                age: 18,
-                sex: "男",
-                address: "我喜欢吃苹果"
+                name: "CPU告警",
+                age: 5,
+                sex: "是",
+                address: "CPU使用量超过80%"
             },
             {
-                name: "张三",
-                age: 18,
-                sex: "男",
-                address: "我喜欢吃炸鸡"
+                name: "磁盘告警",
+                age: 6,
+                sex: "是",
+                address: "磁盘使用量超过90%"
             },
 
             {
-                name: "老王",
-                age: 18,
-                sex: "女",
-                address: "我喜欢吃苹果"
+                name: "内存告警",
+                age: 10,
+                sex: "是",
+                address: "内存使用量超过90%"
             },
             {
-                name: "张三",
-                age: 18,
-                sex: "女",
-                address: "我喜欢吃炸鸡"
+                name: "主机告警",
+                age: 7,
+                sex: "是",
+                address: "主机状态为关闭"
             },
             {
-                name: "张欧",
-                age: 18,
-                sex: "女",
-                address: "我喜欢吃西瓜"
+                name: "MySQL告警",
+                age: 4,
+                sex: "是",
+                address: "Instance Master MySQL is Down!"
             },
             {
-                name: "张五",
-                age: 18,
-                sex: "女",
-                address: "我喜欢吃阿弥光"
+                name: "MySQL告警",
+                age: 3,
+                sex: "是",
+                address: "Instance Master Binary log is Disabled!"
             },
         ]
     };
 
     export default {
-        name: "list",
+        name: "info",
         data(){
             //设置原数据为空
             return{
                 companyName: "",
                 handleModal: false,
                 ModalTitle:'编辑数据',
+                rows:[],
 
                 //  这个对应form里面的数据不能少
 
@@ -138,19 +146,29 @@
                 // 设置table的表头
                 tableColumns: [
                     {
-                        title: "姓名",
+                        type:'selection',
+                        width:70,
+                        align:"center"
+                    },
+                    {
+                        type:"index",
+                        title: "#",
+                        width: 70,
+                    },
+                    {
+                        title: "类型",
                         key: "name"
                     },
                     {
-                        title: "年龄",
+                        title: "次数",
                         key: "age"
                     },
                     {
-                        title: "爱好",
+                        title: "描述",
                         key: "address"
                     },
                     {
-                        title: "性别",
+                        title: "已处理",
                         key: "sex"
                     },
                     {
@@ -166,6 +184,31 @@
         },
         // 方法
         methods: {
+            //多选键
+            selectRows(rows){
+                this.rows=rows;
+            },
+            // batchRemove: function() {
+            //     var ids = this.sels.map(item => item.id).toString();
+            //     this.$confirm("确认删除选中记录吗？", "提示", {
+            //         type: "warning"
+            //     })
+            //         .then(() => {
+            //             // this.listLoading = true;
+            //             //NProgress.start();
+            //             let para = { ids: ids };
+            //             batchRemoveUser(para).then(res => {
+            //                 //this.listLoading = false;
+            //                 //NProgress.done();
+            //                 this.$message({
+            //                     message: "删除成功",
+            //                     type: "success"
+            //                 });
+            //                 this.getUsers();
+            //             });
+            //         })
+            //         .catch(() => {});
+            // },
             // 查找按钮
             search() {
                 // 获取表格数据
@@ -189,32 +232,7 @@
             // 新增按钮的单击事件
             addInfo() {
                 this.handleModal = true;
-                this.modalTitle = "新增";
-            },
-            // 新增数据
-            handleSubmit(name) {
-                var self = this;
-                self.$refs[name].validate(valid => {
-                    if (valid) {
-                        var params = JSON.parse(JSON.stringify(self.formValidate));
-
-                        if (self.modalTitle == "新增") {
-                            // 获取需要渲染到页面中的数据
-                            self.$Message.success("新增成功!");
-                            self.tableData.push(params);
-                        } else {
-                            this.$set(self.tableData, self.itemIndex, params);
-                            self.$Message.success("修改成功!");
-                        }
-                        self.handleModal = false;
-                    } else {
-                        if (self.modalTitle == "新增") {
-                            self.$Message.error("新增失败!");
-                        } else {
-                            self.$Message.error("修改失败!");
-                        }
-                    }
-                });
+                this.ModalTitle = "新增";
             },
             // 修改方法
             editInfo(item, index) {
@@ -223,15 +241,45 @@
                 this.itemIndex = index;
                 this.formValidate = JSON.parse(JSON.stringify(item));
             },
+            // 新增数据
+            handleSubmit(name) {
+                var self = this;
+                self.$refs[name].validate(valid => {
+                    if (valid) {
+                        var params = JSON.parse(JSON.stringify(self.formValidate));
+
+                        if (self.ModalTitle == "新增") {
+                            // 获取需要渲染到页面中的数据
+                            self.$Message.success("新增成功!");
+                            self.tableData.push(params);
+                            testData.histories.push(params);
+                            self.dataCount++;
+                            this.$options.methods.handleListApproveHistory();
+                        } else {
+                            this.$set(self.tableData, self.itemIndex, params);
+                            this.$set(testData.histories,self.itemIndex,params);
+                            self.$Message.success("修改成功!");
+                        }
+                        self.handleModal = false;
+                    } else {
+                        if (self.ModalTitle == "新增") {
+                            self.$Message.error("新增失败!");
+                        } else {
+                            self.$Message.error("修改失败!");
+                        }
+                    }
+                });
+            },
             // 删除一条数据
             remove(index) {
                 this.tableData.splice(index, 1);
+                testData.histories.splice(index,1);
                 this.dataCount--;
                 // on-click  方法 冒泡提示确定
                 this.$Message.success("删除成功");
             },
             cancelDelete() {
-                this.$Message.info("取消删除");
+                this.$Message.info("取消操作");
             },
             // 清除文本框  重置
             handleReset(name) {
@@ -241,8 +289,8 @@
             show(index) {
                 this.$Modal.info({
                     title: "查看详情",
-                    content: `姓名:${this.tableData[index].name}<br>年龄:${this.tableData[index].age}
-         <br>爱好:${this.tableData[index].address}<br>性别:${this.tableData[index].sex}
+                    content: `类型:${this.tableData[index].name}<br>次数:${this.tableData[index].age}
+         <br>描述:${this.tableData[index].address}<br>已处理:${this.tableData[index].sex}
          `
                 });
             },
@@ -265,6 +313,9 @@
                 var _end = index * this.pageSize;
                 this.tableData = this.ajaxHistoryData.slice(_start, _end);
             }
+
+        },
+        mounted(){
 
         },
 
